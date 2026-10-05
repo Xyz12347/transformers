@@ -10,9 +10,19 @@ jobs:
   sast_scan:
     runs-on: ubuntu-latest
     steps:
-      # 1. 把專案程式碼下載到 GitHub 雲端執行環境
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # 這裡把原本的 @master 改成了 @v1
+      - name: Run Bandit Scan
+        uses: pyCQA/bandit-action@v1
+        with:
+          path: '.'
+
+      - name: Run Semgrep Scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: auto
 
       # 2. 安裝並執行 Bandit (專門掃 Python 安全漏洞)
       - name: Run Bandit Scan
