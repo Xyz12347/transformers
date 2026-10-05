@@ -1,0 +1,28 @@
+name: SAST Security Scan
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  sast_scan:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 把專案程式碼下載到 GitHub 雲端執行環境
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. 安裝並執行 Bandit (專門掃 Python 安全漏洞)
+      - name: Run Bandit Scan
+        uses: pyCQA/bandit-action@master
+        with:
+          # 檢查整個專案資料夾
+          path: '.'
+
+      # 3. 安裝並執行 Semgrep (通用靜態資安掃描)
+      - name: Run Semgrep Scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: auto
